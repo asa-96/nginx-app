@@ -2,18 +2,18 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE_NAME = "my-app"
-        DOCKER_IMAGE_TAG = "latest"
+        DOCKER_IMAGE_NAME = "nginx-app"
+        DOCKER_IMAGE_TAG = "$BUILD_NUMBER"
         CHART_NAME = "my-app-chart"
-        NEXUS_URL = "http://nexus.example.com"
+        NEXUS_URL = "http://nexus.kloud.site"
         NEXUS_REPO = "helm-repo"
-        NEXUS_CREDENTIAL_ID = "nexus-credentials"
+        NEXUS_CREDENTIAL_ID = "nexus-creds"
     }
 
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/your-repo/your-app.git'
+                git 'https://github.com/asa-96/nginx-app.git'
             }
         }
 
