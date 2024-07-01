@@ -1,56 +1,37 @@
 apiVersion: argoproj.io/v1alpha1
-kind: Application
+kind: ApplicationSet
 metadata:
-  name: nginx-dev
+  name: nginx-app
   namespace: argocd
 spec:
-  project: default
-  source:
-    repoURL: 'https://github.com/asa-96/nginx-app'
-    targetRevision: HEAD
-    path: envs/dev
-  destination:
-    server: 'https://kubernetes.default.svc'
-    namespace: dev
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
----
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: nginx-qa
-  namespace: argocd
-spec:
-  project: default
-  source:
-    repoURL: 'https://github.com/asa-96/nginx-app'
-    targetRevision: HEAD
-    path: envs/qa
-  destination:
-    server: 'https://kubernetes.default.svc'
-    namespace: qa
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
----
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: nginx-prod
-  namespace: argocd
-spec:
-  project: default
-  source:
-    repoURL: 'https://github.com/asa-96/nginx-app'
-    targetRevision: HEAD
-    path: envs/prod
-  destination:
-    server: 'https://kubernetes.default.svc'
-    namespace: prod
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
+  generators:
+    - list:
+        elements:
+          - environment: dev
+            namespace: dev
+            path: envs/dev
+          - environment: qa
+            namespace: qa
+            path: envs/qa
+          - environment: prod
+            namespace: prod
+            path: envs/prod
+  template:
+    metadata:
+      name: 'nginx-{{environment}}'
+    spec:
+      project: default
+      source:
+        repoURL: 'https://github.com/asa-96/nginx-app'
+        targetRevision: HEAD
+        path: '{{path}}'
+      destination:
+        server: 'https://kubernetes.default.svc'
+        namespace: '{{namespace}}'
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+      destinationNamespace:
+        name: '{{namespace}}'
+        createNamespace: true
