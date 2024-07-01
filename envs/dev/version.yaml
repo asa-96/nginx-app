@@ -8,4 +8,4 @@ spec:
     spec:
       containers:
       - name: nginx-v1
-        image: nginx:1.27.0-perl
+        image: nginx:1.18.0
