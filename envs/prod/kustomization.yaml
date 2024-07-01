@@ -8,4 +8,4 @@ resources:
 
 patchesStrategicMerge:
 - replica.yaml
-
+- version.yaml
