@@ -7,5 +7,5 @@ spec:
   template:
     spec:
       containers:
-      - name: nginx-v1
-        image: nginx:1.18.0
+        - name: nginx
+          image: nginx:1.18.0
