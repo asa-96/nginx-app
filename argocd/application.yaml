@@ -32,6 +32,3 @@ spec:
         automated:
           prune: true
           selfHeal: true
-      destinationNamespace:
-        name: '{{namespace}}'
-        createNamespace: true
